@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+
+
+<!-- ICON PAGE -->
+ <link rel="shortcut icon" href="imgs/logo.Chatbot.LUMA.png">
+
+  <!-- ICONES -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+
+
+<!-- CSS -->
+<link rel="stylesheet" href="style.css">
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> |LUMA| </title>
+</head>
+<body>
+
+  <!-- INTRO -->
+
+  <div id="intro" class="intro-screen">
+    <div class="glow-title">Octopus</div>
+    <p id="introText" class="typing-text">Inicializando sistema...</p>
+  </div>
+  
+  
+    
+    <!-- CABEÇA -->
+     <div class="chatbot-popup">
+        <div class="chat-header">
+            <div class="header-info">
+                <img src="imgs/octopus-removebg-preview.png" alt="">
+                <h2>LUMA</h2>
+            </div>
+        </div>
+
+        <!-- CORPO -->
+         <div class="chat-body">
+
+            <!-- MESNAGEM BOT -->
+            <div class="message bot-message">
+
+                <img class="bot-avatar" src="imgs/logo.Chatbot.LUMA.png" alt="">
+
+                <div class="message-text"> Oie, eu sou a LUMA, em que posso ajudar?</div>
+            </div>
+        
+         </div>
+
+         <!-- FOOTER -->
+
+         <div class="chat-footer">
+
+            <form action="" class="chat-form">
+                <textarea placeholder="Escreva sua pergunta" class="message-input" required></textarea>
+
+
+                <!-- CONTROLES BARRA DE PESQUISA / ICONES -->
+                <div class="chat-controls">
+
+                    <!-- BOTAO DE EMOJI -->
+                    <!-- <button type="button"><i class="fa-regular fa-face-smile"></i></button> -->
+
+                    <!-- BOTAO DE UPLOAD DE IMAGENS -->
+     <div class="file-upload-wrapper">
+        <input type="file" accept="images/*" id="file-input" hidden>
+            <img src="#">
+                <button type="button" id="file-upload"><i class="fa-solid fa-paperclip"></i></button>
+
+       <!-- BOTAO Q CANCELA A IMG -->
+          <button type="button" id="file-calcel"><i class="fa-solid fa-xmark"></i></button>
+          </div>
+                  
+<!-- BOTAO DE AUDIO -->
+<button type="button" id="mic-btn"><i class="fa-solid fa-microphone"></i></button>
+
+
+
+  <!-- BOTAO DE ENVIAR -->
+       <button type="submit" id="send-message"><i class="fa-solid fa-arrow-up"></i></i></button>
+
+                </div>
+            </form>
+         </div>
+
+     </div>
+
+<script src="script.js"></script>
+
+
+<!-- ACESSIBILIDADE -->
+<script src="https://cdn.userway.org/widget.js" data-account="kCDHqw9ltL"></script>
+<div vw class="enabled">
+  <div vw-access-button class="active"></div>
+  <div vw-plugin-wrapper>
+    <div class="vw-plugin-top-wrapper"></div>
+  </div>
+</div>
+
+<!-- LIBRAS -->
+<div vw class="enabled">
+  <div vw-access-button class="active"></div>
+  <div vw-plugin-wrapper>
+    <div class="vw-plugin-top-wrapper"></div>
+  </div>
+</div>
+<script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
+<script>
+  new window.VLibras.Widget('https://vlibras.gov.br/app');
+</script>
+
+</body>
+</html>
