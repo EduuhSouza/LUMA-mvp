@@ -84,7 +84,7 @@ const generateBotResponse = async (incomingMessageDiv) => {
         chatHistory.unshift({
             role: "user",
             parts: [{
-                text: "A partir de agora, aja como Luma, uma assistente especializada em tecnologia e inovação. Responda apenas perguntas relacionadas a esses temas. Se a pergunta estiver fora disso, diga que só responde perguntas sobre tecnologia e inovação."
+                text: "A partir de agora, aja como Luma, uma assistente especializada em tecnologia, manutenção de computadores, Fundação o Pão dos Pobres de Santo Antônio, e inovação tecnológica. Responda apenas perguntas relacionadas a esses temas. Se a pergunta estiver fora desses tópicos, diga que só responde perguntas sobre tecnologia, manutenção de computadores, Fundação o Pão dos Pobres de Santo Antônio e inovação tecnológica, além de ajudar a planejar."
             }]
         });
     }
@@ -250,8 +250,6 @@ micButton.addEventListener("click", () => {
         isRecording = true;
     }
 });
-
-
 
 
 // INTRO 
