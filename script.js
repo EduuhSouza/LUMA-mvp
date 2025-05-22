@@ -84,7 +84,7 @@ const generateBotResponse = async (incomingMessageDiv) => {
         chatHistory.unshift({
             role: "user",
             parts: [{
-                text: "A partir de agora, aja como Luma, uma assistente especializada em tecnologia, manutenção de computadores, Fundação o Pão dos Pobres de Santo Antônio, e inovação tecnológica. Responda apenas perguntas relacionadas a esses temas. Se a pergunta estiver fora desses tópicos, diga que só responde perguntas sobre tecnologia, manutenção de computadores, Fundação o Pão dos Pobres de Santo Antônio e inovação tecnológica, além de ajudar a planejar."
+                text: "A partir de agora, aja como Aluma, uma assistente especializada em tecnologia, manutenção de computadores, Fundação o Pão dos Pobres de Santo Antônio, e inovação tecnológica. Responda apenas perguntas relacionadas a esses temas. Se a pergunta estiver fora desses tópicos, diga que só responde perguntas sobre tecnologia, manutenção de computadores, Fundação o Pão dos Pobres de Santo Antônio e inovação tecnológica, além de ajudar a planejar."
             }]
         });
     }
@@ -108,8 +108,55 @@ const generateBotResponse = async (incomingMessageDiv) => {
             throw new Error(data.error?.message || "Resposta inválida.");
         }
 
-        const apiResponseText = data.candidates[0].content.parts[0].text.replace(/\*\*(.*?)\*\*/g, "$1").trim();
-        messageElement.innerText = apiResponseText;
+        // CORRIJE OS * SOLTOS
+   const apiResponseText = data.candidates[0].content.parts[0].text
+    // Formata títulos: adiciona espaço antes e depois, e remove os #
+    .replace(/^#{1,6}\s*(.+)$/gm, "\n\n$1\n\n")
+    // Remove **negrito**
+    .replace(/\*\*(.*?)\*\*/g, "$1")
+    // Remove *itálico*
+    .replace(/\*(.*?)\*/g, "$1")
+    // Remove __sublinhado__
+    .replace(/__(.*?)__/g, "$1")
+    // Remove _itálico_
+    .replace(/_(.*?)_/g, "$1")
+    // Remove ~~riscado~~
+    .replace(/~~(.*?)~~/g, "$1")
+    // Remove todos os * restantes
+    .replace(/\*/g, "")
+    .trim();
+
+messageElement.innerText = apiResponseText;
+
+// FORMATAÇÃO DOS TEXTOS
+const markdownToHTML = (text) => {
+    return text
+        // Títulos (do h1 ao h6)
+        .replace(/^######\s?(.*)$/gm, "<h6>$1</h6>")
+        .replace(/^#####\s?(.*)$/gm, "<h5>$1</h5>")
+        .replace(/^####\s?(.*)$/gm, "<h4>$1</h4>")
+        .replace(/^###\s?(.*)$/gm, "<h3>$1</h3>")
+        .replace(/^##\s?(.*)$/gm, "<h2>$1</h2>")
+        .replace(/^#\s?(.*)$/gm, "<h1>$1</h1>")
+        // Negrito **texto**
+        .replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>")
+        // Itálico *texto*
+        .replace(/\*(.*?)\*/g, "<em>$1</em>")
+        // Sublinhado __texto__
+        .replace(/__(.*?)__/g, "<u>$1</u>")
+        // Riscado ~~texto~~
+        .replace(/~~(.*?)~~/g, "<del>$1</del>")
+        // Listas - ou *
+        .replace(/^\s*[-*]\s+(.*)$/gm, "<li>$1</li>")
+        // Parágrafos
+        .replace(/(?:\r\n|\r|\n){2,}/g, "</p><p>")
+        .replace(/^((?!<h|<ul|<li|<p).+)$/gm, "<p>$1</p>");
+};
+
+const apiResponseRaw = data.candidates[0].content.parts[0].text;
+const apiResponseHTML = markdownToHTML(apiResponseRaw);
+messageElement.innerHTML = apiResponseHTML;
+
 
         // Salva resposta do bot
         chatHistory.push({
@@ -151,7 +198,7 @@ const handleOutgoingMessage = (e) => {
     chatBody.scrollTo({ top: chatBody.scrollHeight, behavior: "smooth" });
 
     setTimeout(() => {
-        const botMessageContent = `<img class="bot-avatar" src="imgs/logo.Chatbot.LUMA.png" alt="">
+        const botMessageContent = `<img class="bot-avatar" src="imgs/Avatar LUMA.jpg" alt="">
             <div class="message-text"> 
                 <div class="thinking-indicator">
                     <div class="dot"></div>
@@ -259,7 +306,7 @@ window.addEventListener("load", () => {
   
     // Texto depois do "Inicializando sistema..."
     setTimeout(() => {
-      introText.innerText = "Olá, eu sou a Luma...";
+      introText.innerText = "Olá, eu sou a ALUMA...";
       introText.style.animation = "none";
       void introText.offsetWidth; // reinicia animação
       introText.style.animation = "typing 3s steps(40, end) forwards, blink 0.8s step-end infinite";
