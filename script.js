@@ -9,44 +9,63 @@ const micButton = document.querySelector("#mic-btn");
 
 // FALA DO BOT
 const synth = window.speechSynthesis;
-let voicesLoaded = false;
 let ptVoice = null;
 
-// Ao carregar a página, cancela qualquer fala ativa
+// INTERROMPE FALA AO CARREGAR A PÁGINA
 window.addEventListener("load", () => {
     if (synth.speaking) {
         synth.cancel();
     }
+
+    // Garante que as vozes estejam carregadas corretamente
+    loadVoices();
 });
 
 const loadVoices = () => {
     return new Promise((resolve) => {
-        let voices = synth.getVoices();
+        const setVoice = () => {
+            const voices = synth.getVoices();
 
-        const escolherVozFeminina = () => {
-            // Filtra apenas vozes em português
-            const ptVoices = voices.filter(v => v.lang === "pt-BR" || v.lang.startsWith("pt"));
+            // Filtra vozes em português e tenta escolher uma voz feminina
+            const ptVoices = voices.filter(v => v.lang.startsWith("pt"));
 
-            // Tenta encontrar uma voz feminina conhecida
-            ptVoice = ptVoices.find(v =>
-                v.name.includes("Maria") ||
-                v.name.includes("Google português do Brasil") ||
-                v.name.toLowerCase().includes("feminina")
-            ) || ptVoices[0]; // Se não achar nenhuma, usa a primeira
+            ptVoice =
+                ptVoices.find(v =>
+                    v.name.toLowerCase().includes("maria") ||
+                    v.name.toLowerCase().includes("female") ||
+                    v.name.toLowerCase().includes("feminina") ||
+                    v.name.toLowerCase().includes("google português do brasil")
+                ) || ptVoices[0]; // fallback para a primeira voz pt-BR
 
-            voicesLoaded = true;
             resolve();
         };
 
-        if (voices.length !== 0) {
-            escolherVozFeminina();
+        if (synth.getVoices().length > 0) {
+            setVoice();
         } else {
-            synth.addEventListener("voiceschanged", () => {
-                voices = synth.getVoices();
-                escolherVozFeminina();
-            }, { once: true });
+            // Aguarda evento que carrega as vozes no Chrome
+            synth.addEventListener("voiceschanged", setVoice, { once: true });
         }
     });
+};
+
+const speak = async (text) => {
+    if (!window.speechSynthesis) return;
+
+    await loadVoices();
+
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.lang = "pt-BR";
+    utterance.rate = 1;
+    utterance.pitch = 1;
+
+    if (ptVoice) {
+        utterance.voice = ptVoice;
+    }
+
+    // Cancela qualquer fala anterior antes de falar de novo
+    synth.cancel();
+    synth.speak(utterance);
 };
 
 
