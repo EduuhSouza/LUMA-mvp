@@ -7,7 +7,7 @@ const fileUploadWrapper = document.querySelector(".file-upload-wrapper");
 const FileCalcelButton = document.querySelector("#file-calcel");
 const micButton = document.querySelector("#mic-btn");
 
-// FALA DO BOT
+ // FALA DO BOT
 const synth = window.speechSynthesis;
 let voicesLoaded = false;
 let ptVoice = null;
@@ -28,41 +28,6 @@ const loadVoices = () => {
             }, { once: true });
         }
     });
-};
-const speak = async (text) => {
-    if (!window.speechSynthesis) return;
-
-    await loadVoices();
-
-    const utterance = new SpeechSynthesisUtterance(text);
-    utterance.lang = "pt-BR";
-    utterance.rate = 1;
-    utterance.pitch = 1;
-
-    if (ptVoice) {
-        utterance.voice = ptVoice;
-    }
-
-    // Cancela qualquer fala anterior antes de falar de novo
-    synth.cancel();
-    synth.speak(utterance);
-};
-
-
-const speak = async (text) => {
-    if (!'speechSynthesis' in window) return;
-
-    await loadVoices();
-
-    const utterance = new SpeechSynthesisUtterance(text);
-    utterance.lang = "pt-BR";
-    utterance.rate = 1;
-    utterance.pitch = 1;
-
-    if (ptVoice) utterance.voice = ptVoice;
-
-    synth.cancel(); // Evita sobreposição
-    synth.speak(utterance);
 };
 
 // HISTÓRICO COMPLETO DE CONVERSA
