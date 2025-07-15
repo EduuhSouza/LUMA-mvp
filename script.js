@@ -314,24 +314,24 @@ micButton.addEventListener("click", () => {
 
 window.addEventListener("load", () => {
     window.speechSynthesis.cancel();
-    // const intro = document.getElementById("intro");
-    // const introText = document.getElementById("introText");
+    const intro = document.getElementById("intro");
+    const introText = document.getElementById("introText");
   
     // Texto depois do "Inicializando sistema..."
-    // setTimeout(() => {
-    //   introText.innerText = "Olá, eu sou a ALUMA...";
-    //   introText.style.animation = "none";
-    //   void introText.offsetWidth; // reinicia animação
-    //   introText.style.animation = "typing 3s steps(40, end) forwards, blink 0.8s step-end infinite";
-    // }, 4000);
+    setTimeout(() => {
+      introText.innerText = "Olá, eu sou a ALUMA...";
+      introText.style.animation = "none";
+      void introText.offsetWidth; // reinicia animação
+      introText.style.animation = "typing 3s steps(40, end) forwards, blink 0.8s step-end infinite";
+    }, 4000);
   
     // Esconde a intro e revela o chat
-    // setTimeout(() => {
-    //   intro.style.opacity = 0;
-    //   setTimeout(() => {
-    //     intro.style.display = "none";
-    //   }, 1000);
-    // }, 8000);
+    setTimeout(() => {
+      intro.style.opacity = 0;
+      setTimeout(() => {
+        intro.style.display = "none";
+      }, 1000);
+    }, 8000);
   };
   
   
