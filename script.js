@@ -7,28 +7,57 @@ const fileUploadWrapper = document.querySelector(".file-upload-wrapper");
 const FileCalcelButton = document.querySelector("#file-calcel");
 const micButton = document.querySelector("#mic-btn");
 
- // FALA DO BOT
+// FALA DO BOT
 const synth = window.speechSynthesis;
-let voicesLoaded = false;
 let ptVoice = null;
+
+// Interrompe a fala ao recarregar a página
+window.addEventListener("beforeunload", () => {
+    synth.cancel();
+});
 
 const loadVoices = () => {
     return new Promise((resolve) => {
-        let voices = synth.getVoices();
-        if (voices.length !== 0) {
-            ptVoice = voices.find(v => v.lang === "pt-BR" || v.lang.startsWith("pt"));
-            voicesLoaded = true;
+        const setVoice = () => {
+            const voices = synth.getVoices();
+
+            // Prioriza vozes femininas em português
+            const ptVoices = voices.filter(v => v.lang.startsWith("pt"));
+            ptVoice =
+                ptVoices.find(v =>
+                    v.name.toLowerCase().includes("google") ||
+                    v.name.toLowerCase().includes("maria") ||
+                    v.name.toLowerCase().includes("feminina") ||
+                    v.name.toLowerCase().includes("female")
+                ) || ptVoices[0]; // fallback
+
             resolve();
+        };
+
+        if (synth.getVoices().length > 0) {
+            setVoice();
         } else {
-            synth.addEventListener("voiceschanged", () => {
-                voices = synth.getVoices();
-                ptVoice = voices.find(v => v.lang === "pt-BR" || v.lang.startsWith("pt"));
-                voicesLoaded = true;
-                resolve();
-            }, { once: true });
+            synth.addEventListener("voiceschanged", setVoice, { once: true });
         }
     });
 };
+
+const speak = async (text) => {
+    await loadVoices();
+
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.lang = "pt-BR";
+    utterance.pitch = 1;
+    utterance.rate = 1;
+
+    if (ptVoice) {
+        utterance.voice = ptVoice;
+    }
+
+    synth.cancel();
+    synth.speak(utterance);
+};
+
 
 // HISTÓRICO COMPLETO DE CONVERSA
 const chatHistory = [];
@@ -284,26 +313,26 @@ micButton.addEventListener("click", () => {
 
 // INTRO 
 
-window.addEventListener("load", () => {
-    const intro = document.getElementById("intro");
-    const introText = document.getElementById("introText");
+// window.addEventListener("load", () => {
+//     const intro = document.getElementById("intro");
+//     const introText = document.getElementById("introText");
 
     // Texto depois do "Inicializando sistema..."
-    setTimeout(() => {
-        introText.innerText = "Olá, eu sou a ALUMA...";
-        introText.style.animation = "none";
-        void introText.offsetWidth; // reinicia animação
-        introText.style.animation = "typing 3s steps(40, end) forwards, blink 0.8s step-end infinite";
-    }, 4000);
+    // setTimeout(() => {
+    //     introText.innerText = "Olá, eu sou a ALUMA...";
+    //     introText.style.animation = "none";
+    //     void introText.offsetWidth; // reinicia animação
+    //     introText.style.animation = "typing 3s steps(40, end) forwards, blink 0.8s step-end infinite";
+    // }, 4000);
 
     // Esconde a intro e revela o chat
-    setTimeout(() => {
-        intro.style.opacity = 0;
-        setTimeout(() => {
-            intro.style.display = "none";
-        }, 1000);
-    }, 8000);
-});
+//     setTimeout(() => {
+//         intro.style.opacity = 0;
+//         setTimeout(() => {
+//             intro.style.display = "none";
+//         }, 1000);
+//     }, 8000);
+// });
 
   
   
