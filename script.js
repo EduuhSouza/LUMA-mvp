@@ -313,7 +313,7 @@ micButton.addEventListener("click", () => {
 // INTRO 
 
 window.addEventListener("load", () => {
-    window.speechSynthesis.cancel();
+    // window.speechSynthesis.cancel();
     const intro = document.getElementById("intro");
     const introText = document.getElementById("introText");
   
