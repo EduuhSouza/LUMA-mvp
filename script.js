@@ -12,23 +12,43 @@ const synth = window.speechSynthesis;
 let voicesLoaded = false;
 let ptVoice = null;
 
+// Ao carregar a página, cancela qualquer fala ativa
+window.addEventListener("load", () => {
+    if (synth.speaking) {
+        synth.cancel();
+    }
+});
+
 const loadVoices = () => {
     return new Promise((resolve) => {
         let voices = synth.getVoices();
-        if (voices.length !== 0) {
-            ptVoice = voices.find(v => v.lang === "pt-BR" || v.lang.startsWith("pt"));
+
+        const escolherVozFeminina = () => {
+            // Filtra apenas vozes em português
+            const ptVoices = voices.filter(v => v.lang === "pt-BR" || v.lang.startsWith("pt"));
+
+            // Tenta encontrar uma voz feminina conhecida
+            ptVoice = ptVoices.find(v =>
+                v.name.includes("Maria") ||
+                v.name.includes("Google português do Brasil") ||
+                v.name.toLowerCase().includes("feminina")
+            ) || ptVoices[0]; // Se não achar nenhuma, usa a primeira
+
             voicesLoaded = true;
             resolve();
+        };
+
+        if (voices.length !== 0) {
+            escolherVozFeminina();
         } else {
             synth.addEventListener("voiceschanged", () => {
                 voices = synth.getVoices();
-                ptVoice = voices.find(v => v.lang === "pt-BR" || v.lang.startsWith("pt"));
-                voicesLoaded = true;
-                resolve();
+                escolherVozFeminina();
             }, { once: true });
         }
     });
 };
+
 
 const speak = async (text) => {
     if (!'speechSynthesis' in window) return;
